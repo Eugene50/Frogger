@@ -28,6 +28,8 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+    
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -63,7 +65,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
         lastTime = Date.now();
         main();
     }
@@ -79,7 +81,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+         //checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -89,11 +91,18 @@ var Engine = (function(global) {
      * the data/properties related to the object. Do your drawing in your
      * render methods.
      */
+    
+    function checkCollisions() {    // столкновения
+        enemy.collisions();
+    }
+
+
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
+        //stone.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -121,6 +130,8 @@ var Engine = (function(global) {
         // Before drawing, clear existing canvas
         ctx.clearRect(0,0,canvas.width,canvas.height)
 
+        
+
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
@@ -134,10 +145,9 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
-            }
-        }
-
+                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);              
+            }            
+        }                
         renderEntities();
     }
 
@@ -148,21 +158,25 @@ var Engine = (function(global) {
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
-         */
+         */        
         allEnemies.forEach(function(enemy) {
             enemy.render();
-        });
-
+        });        
         player.render();
+        //stone.render();
     }
-
+    
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
+    
+    
+     /* function reset() {
+        if (enemy.collisions()&&player.update()) 
+        init();
         // noop
-    }
+    } */
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -173,7 +187,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Gem_Green.png',
+        'images/Gem Orange.png',
+        'images/Gem Blue.png'
     ]);
     Resources.onReady(init);
 
